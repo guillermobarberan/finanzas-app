@@ -82,6 +82,17 @@ function App() {
     }
   }
 
+  const editarMonto = (id, nuevoMonto) => {
+    const monto = parseFloat(nuevoMonto)
+    if (!nuevoMonto || isNaN(monto) || monto <= 0) {
+      eliminarTransaccion(id)
+    } else {
+      setTransacciones(prev =>
+        prev.map(t => t.id === id ? { ...t, amount: monto } : t)
+      )
+    }
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -110,7 +121,7 @@ function App() {
           </div>
           <div className="app-card">
             <h2 className="card-title">Historial de Transacciones</h2>
-            <TransactionList transacciones={transacciones} onEliminar={eliminarTransaccion} onEditar={editarTransaccion} />
+            <TransactionList transacciones={transacciones} onEliminar={eliminarTransaccion} onEditar={editarTransaccion} onEditarMonto={editarMonto} />
           </div>
         </div>
       </main>

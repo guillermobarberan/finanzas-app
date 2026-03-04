@@ -23,11 +23,16 @@ function formatearFecha(dateStr) {
 const formatearMoneda = (monto) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto)
 
-function TransactionList({ transacciones, onEliminar, onEditar }) {
-  // Estado de edición inline
+function TransactionList({ transacciones, onEliminar, onEditar, onEditarMonto }) {
+  // Estado de edición de descripción
   const [editandoId, setEditandoId] = useState(null)
   const [textoEdicion, setTextoEdicion] = useState('')
   const inputEditRef = useRef(null)
+
+  // Estado de edición de monto
+  const [editandoMontoId, setEditandoMontoId] = useState(null)
+  const [valorMonto, setValorMonto] = useState('')
+  const inputMontoRef = useRef(null)
 
   // Estado de filtros
   const [desde, setDesde] = useState('')
@@ -37,7 +42,7 @@ function TransactionList({ transacciones, onEliminar, onEditar }) {
   const [textoBusqueda, setTextoBusqueda] = useState('')
   const [errorPeriodo, setErrorPeriodo] = useState('')
 
-  // Enfocar y seleccionar el input al entrar en modo edición
+  // Enfocar y seleccionar al entrar en modo edición de descripción
   useEffect(() => {
     if (editandoId && inputEditRef.current) {
       inputEditRef.current.focus()
@@ -45,10 +50,28 @@ function TransactionList({ transacciones, onEliminar, onEditar }) {
     }
   }, [editandoId])
 
-  // Inicia edición de una transacción
+  // Enfocar y seleccionar al entrar en modo edición de monto
+  useEffect(() => {
+    if (editandoMontoId && inputMontoRef.current) {
+      inputMontoRef.current.focus()
+      inputMontoRef.current.select()
+    }
+  }, [editandoMontoId])
+
+  // Inicia edición de descripción (cancela edición de monto si estaba activa)
   const iniciarEdicion = (t) => {
+    setEditandoMontoId(null)
+    setValorMonto('')
     setEditandoId(t.id)
     setTextoEdicion(t.description)
+  }
+
+  // Inicia edición de monto (cancela edición de descripción si estaba activa)
+  const iniciarEdicionMonto = (t) => {
+    setEditandoId(null)
+    setTextoEdicion('')
+    setEditandoMontoId(t.id)
+    setValorMonto(String(t.amount))
   }
 
   // Confirma y guarda (o elimina si vacío)
@@ -64,6 +87,22 @@ function TransactionList({ transacciones, onEliminar, onEditar }) {
     if (e.key === 'Escape') {
       setEditandoId(null)
       setTextoEdicion('')
+    }
+  }
+
+  // Confirma y guarda el monto editado (o elimina si vacío/inválido)
+  const confirmarEdicionMonto = () => {
+    if (!editandoMontoId) return
+    onEditarMonto(editandoMontoId, valorMonto)
+    setEditandoMontoId(null)
+    setValorMonto('')
+  }
+
+  const manejarTeclaEdicionMonto = (e) => {
+    if (e.key === 'Enter') confirmarEdicionMonto()
+    if (e.key === 'Escape') {
+      setEditandoMontoId(null)
+      setValorMonto('')
     }
   }
 
@@ -207,9 +246,27 @@ function TransactionList({ transacciones, onEliminar, onEditar }) {
               </div>
 
               <div className="transaction-right">
-                <span className={`transaction-amount ${t.type === 'income' ? 'monto-ingreso' : 'monto-gasto'}`}>
-                  {t.type === 'income' ? '+' : '-'}{formatearMoneda(t.amount)}
-                </span>
+                {editandoMontoId === t.id ? (
+                  <input
+                    ref={inputMontoRef}
+                    type="number"
+                    className="input-edicion-monto"
+                    value={valorMonto}
+                    min="0.01"
+                    step="0.01"
+                    onChange={e => setValorMonto(e.target.value)}
+                    onBlur={confirmarEdicionMonto}
+                    onKeyDown={manejarTeclaEdicionMonto}
+                  />
+                ) : (
+                  <span
+                    className={`transaction-amount ${t.type === 'income' ? 'monto-ingreso' : 'monto-gasto'}`}
+                    onDoubleClick={() => iniciarEdicionMonto(t)}
+                    title="Doble clic para editar monto"
+                  >
+                    {t.type === 'income' ? '+' : '-'}{formatearMoneda(t.amount)}
+                  </span>
+                )}
                 <button
                   className="btn-eliminar"
                   onClick={() => onEliminar(t.id)}
