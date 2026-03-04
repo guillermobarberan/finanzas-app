@@ -1,0 +1,79 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 600px) {
+  .dashboard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  transition: transform var(--transition);
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Color del borde izquierdo según tipo */
+.summary-card--balance.positivo {
+  border-left-color: var(--income);
+}
+
+.summary-card--balance.negativo {
+  border-left-color: var(--expense);
+}
+
+.summary-card--income {
+  border-left-color: var(--income);
+}
+
+.summary-card--expense {
+  border-left-color: var(--expense);
+}
+
+.summary-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.summary-amount {
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Colores de los montos */
+.monto-positivo { color: var(--income); }
+.monto-negativo { color: var(--expense); }
+.monto-ingreso  { color: var(--income); }
+.monto-gasto    { color: var(--expense); }

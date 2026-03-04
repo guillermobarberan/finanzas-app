@@ -1,0 +1,20 @@
+.donut-container {
+  width: 100%;
+}
+
+/* Estado cuando no hay gastos */
+.donut-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.donut-vacio-icono {
+  font-size: 2.5rem;
+}

@@ -1,0 +1,282 @@
+.transaction-list {
+  /* Contenedor principal de la lista */
+}
+
+/* ── Panel de filtros ─────────────────────────────────────── */
+.filtros-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Input de búsqueda por descripción */
+.filtro-input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  transition: border-color var(--transition);
+}
+
+.filtro-input:focus {
+  border-color: var(--accent);
+}
+
+.filtro-input--texto {
+  width: 100%;
+}
+
+/* Fila de filtro de período: fechas + botones */
+.filtro-periodo-fila {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filtro-fecha-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.filtro-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding-left: 2px;
+}
+
+.filtro-input--fecha {
+  width: 130px;
+  /* Estilo del calendario nativo en tema oscuro */
+  color-scheme: dark;
+}
+
+/* Botón Buscar */
+.btn-buscar {
+  height: 30px;
+  padding: 0 14px;
+  background-color: var(--accent);
+  color: #0d1117;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background-color var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-buscar:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Botón limpiar filtros */
+.btn-limpiar {
+  height: 30px;
+  width: 30px;
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-limpiar:hover {
+  background-color: rgba(248, 81, 73, 0.12);
+  color: var(--expense);
+  border-color: var(--expense);
+}
+
+/* Mensaje de error de período */
+.filtro-error {
+  font-size: 0.75rem;
+  color: var(--expense);
+  padding-left: 2px;
+}
+
+/* ── Input de edición inline ──────────────────────────────── */
+.input-edicion {
+  width: 100%;
+  background-color: var(--bg-input);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+/* ── Área desplazable ─────────────────────────────────────── */
+.list-scroll {
+  max-height: 380px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+
+.list-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 4px;
+}
+
+/* ── Fila de cada transacción ─────────────────────────────── */
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition);
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-item:hover {
+  background-color: var(--bg-input);
+}
+
+/* Barra vertical indicadora de tipo */
+.transaction-indicator {
+  width: 3px;
+  height: 36px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.transaction-item--income .transaction-indicator {
+  background-color: var(--income);
+}
+
+.transaction-item--expense .transaction-indicator {
+  background-color: var(--expense);
+}
+
+/* Información descriptiva */
+.transaction-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.transaction-description {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: text;
+}
+
+/* Indicación visual de que la descripción es editable */
+.transaction-description:hover {
+  text-decoration: underline dashed var(--text-muted);
+  text-underline-offset: 3px;
+}
+
+.transaction-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.transaction-category {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-input);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.transaction-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Monto y botón de eliminar */
+.transaction-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.transaction-amount {
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.monto-ingreso { color: var(--income); }
+.monto-gasto   { color: var(--expense); }
+
+/* Botón de eliminar */
+.btn-eliminar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.btn-eliminar:hover {
+  background-color: rgba(248, 81, 73, 0.15);
+  color: var(--expense);
+}
+
+/* ── Estado vacío ─────────────────────────────────────────── */
+.lista-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 160px;
+  text-align: center;
+}
+
+.lista-vacia-icono {
+  font-size: 2.5rem;
+}
+
+.lista-vacia p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.lista-vacia-sub {
+  font-size: 0.8rem !important;
+  color: var(--text-muted) !important;
+}
